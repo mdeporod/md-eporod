@@ -187,3 +187,46 @@
   if(btn) btn.addEventListener('click',function(){ apply(!en); window.scrollTo({top:0}); });
 })();
 </script>
+
+<script>
+(function(){
+  var T={
+    fa:{title:'دریافت کاتالوگ',sub:'زبان کاتالوگ را انتخاب کنید',fa:'کاتالوگ فارسی',en:'English catalog',meta:'PDF · ۴ مگابایت',close:'بستن'},
+    en:{title:'Download catalog',sub:'Choose the catalog language',fa:'Persian catalog (فارسی)',en:'English catalog',meta:'PDF · 4 MB',close:'Close'}
+  };
+  var ov=document.createElement('div');
+  ov.style.cssText='position:fixed;inset:0;z-index:9998;background:rgba(5,6,8,.85);display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(6px)';
+  var card=document.createElement('div');
+  card.style.cssText='width:100%;max-width:400px;background:#141922;border:1px solid rgba(212,169,74,.35);border-radius:20px;padding:24px;box-shadow:0 30px 80px rgba(0,0,0,.6);color:#F4F1EA';
+  ov.appendChild(card); document.body.appendChild(ov);
+  function link(href,label,meta,primary){
+    var a=document.createElement('a'); a.href=href; a.setAttribute('download',''); a.target='_blank'; a.rel='noopener';
+    a.style.cssText='display:block;margin-top:12px;padding:14px 16px;border-radius:14px;text-decoration:none;font-weight:700;'+
+      (primary?'background:linear-gradient(135deg,#F2D388,#B8892E);color:#0A0C10':'border:1px solid rgba(212,169,74,.55);color:#D4A94A');
+    var l=document.createElement('div'); l.textContent=label; l.style.fontSize='16px';
+    var m=document.createElement('div'); m.textContent=meta; m.style.cssText='font-size:12px;font-weight:500;opacity:.75;margin-top:2px';
+    a.appendChild(l); a.appendChild(m); a.addEventListener('click',function(){ setTimeout(close,300); });
+    return a;
+  }
+  function build(){
+    var s=T[(document.documentElement.lang||'fa')==='en'?'en':'fa'];
+    card.innerHTML='';
+    var h=document.createElement('div'); h.textContent=s.title; h.style.cssText='font-size:20px;font-weight:800';
+    var p=document.createElement('div'); p.textContent=s.sub; p.style.cssText='margin-top:6px;font-size:14px;color:#A7AFBD';
+    card.appendChild(h); card.appendChild(p);
+    card.appendChild(link('persian.pdf',s.fa,s.meta,true));
+    card.appendChild(link('english.pdf',s.en,s.meta,false));
+    var c=document.createElement('button'); c.type='button'; c.textContent=s.close;
+    c.style.cssText='margin-top:14px;width:100%;padding:10px;border:0;background:transparent;color:#7B8494;font-size:14px;cursor:pointer';
+    c.addEventListener('click',close); card.appendChild(c);
+  }
+  function open(){ build(); ov.style.display='flex'; document.body.style.overflow='hidden'; }
+  function close(){ ov.style.display='none'; document.body.style.overflow=''; }
+  ov.addEventListener('click',function(e){ if(e.target===ov) close(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
+  [].slice.call(document.querySelectorAll('button')).forEach(function(b){
+    var t=b.textContent.trim();
+    if(t==='دریافت کاتالوگ'||t==='Download catalog') b.addEventListener('click',open);
+  });
+})();
+</script>
