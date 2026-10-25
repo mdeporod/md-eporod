@@ -230,3 +230,14 @@
   });
 })();
 </script>
+
+<script>
+(function(){
+  var els=[].slice.call(document.querySelectorAll('.reveal:not(.is-visible)'));
+  function show(e){ e.classList.add('is-visible'); }
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){ es.forEach(function(x){ if(x.isIntersecting){ show(x.target); io.unobserve(x.target); } }); },{threshold:0.05});
+    els.forEach(function(e){ io.observe(e); });
+  } else { els.forEach(show); }
+})();
+</script>
